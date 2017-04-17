@@ -1,0 +1,16 @@
+require_relative 'utility.rb'
+require "awesome_print"
+#tables
+t1 = t2 = t3 = []
+
+t1 = readTable("T1.txt")
+t2 = readTable("T2.txt")
+t3 = readTable("T3.txt")
+
+ap t1
+
+t1.each do |line|
+  line.each do |tuple|
+    puts tuple
+  end
+end
