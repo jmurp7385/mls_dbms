@@ -194,9 +194,7 @@ def where(table, tables, where, schema, clearance)
 		where[where.index("=")].replace("==")
 	end
 	clauses = where.size / 3
-	i = 0
-	count = 0
-	itr = 0
+	i = count = itr = 0
 	while count < clauses		
 		table = where_logic(table, tables, where, schema, clearance, i, itr)
 		count += 1
