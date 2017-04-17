@@ -141,11 +141,11 @@ def convert_cols(cols,tables,schema)
 			cols_new.push(schema[col])
 		end
 		if cols.include?("a1")
-			cols_new.push(schema["akc"])	#really adds akc col
+			cols_new.push(schema["akc"])
 		elsif cols.include?("b1")
-			cols_new.push(schema["bkc"])	#really adds bkc col
+			cols_new.push(schema["bkc"])
 		elsif cols.include?("c1")
-			cols_new.push(schema["ckc"])	#really adds ckc col
+			cols_new.push(schema["ckc"])
 		end
 	end
 	if !cols_new.include?(schema["atc"])
@@ -188,11 +188,7 @@ class String
 end
 
 def where(table, tables, where, schema, clearance)
-	where.slice! "and"
-	where = where.split(' ')
-	if where.include?("=")
-		where[where.index("=")].replace("==")
-	end
+	where = clean_where_clauses(where)
 	clauses = where.size / 3
 	i = count = itr = 0
 	while count < clauses		

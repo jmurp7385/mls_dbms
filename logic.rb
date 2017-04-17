@@ -89,7 +89,7 @@ def where_logic(table, tables, where, schema, clearance, i, itr)
 			new_table.push(row)
 			itr = 1
 		else
-			if (where[i] == "atc") || (where[i] == "btc") || (where[i] == "ctc")
+			if (where[i] == "tc") || (where[i] == "atc") || (where[i] == "btc") || (where[i] == "ctc")
 				if where[i+2] > clearance
 					abort("You don't have the clearance for that")
 				end
@@ -140,4 +140,19 @@ def where_logic(table, tables, where, schema, clearance, i, itr)
 		end
 	end
 	new_table	
+end
+
+def clean_where_clauses(where)
+	loop do
+		where.slice! "and"
+		break if !where.include?("and")
+	end
+	where = where.split(' ')
+	if where.include?("=")
+		loop do
+			where[where.index("=")].replace("==")
+			break if !where.include?("=")
+		end
+	end
+	where
 end
