@@ -1,18 +1,21 @@
 require 'matrix'
 require 'sql_tree'
+require 'json'
 require_relative 'logic.rb'
 
 def readTable(file, rows, cols)
 	table = []
+	count = 0
 	File.open(file).each do |line|
 		tuple = []
 		tuple = line.split(' ')
     		table.push(tuple)
+		count += 1
   	end
 	table
 end
 
-def printTable(table)
+def print_table(table)
 	width = table.flatten.max.to_s.size+4
 	puts table.map { |a| a.map { |i| i.to_s.rjust(width) }.join }
 end
@@ -87,11 +90,17 @@ def join(used,t1,t2,t3)
 	new_table
 end
 
-def to_m(t)
+def cartesian_product(tables_used,t1,t2,t3,schema)
+	cartesian_product_logic(tables_used, t1, t2, t3, schema)
+end
+
+def to_m_fast(t)
 	m = Matrix[]
+	rows = Array[]
 	t.each do |row|
-		m = Matrix.rows(m.to_a << row)
+		rows << row
 	end
+	m = Matrix.rows(rows)
 	m
 end
 
@@ -104,7 +113,7 @@ end
 def print_query(m,cols,tables)
 	ans = []
 	cols.each do |c|
-		#puts c
+=begin
 		if c >= 0 && c < 4
 			if tables.include?(0)
 				ans.push(m.column(c).to_a)
@@ -120,7 +129,10 @@ def print_query(m,cols,tables)
 				ans.push(m.column(c).to_a)
 			end
 		end
+=end
+		ans.push(m.column(c).to_a)
 	end
+
 	print_matrix(ans.transpose)
 end
 
@@ -128,13 +140,13 @@ def convert_cols(cols,tables,schema)
 	cols_new = []
 	if cols.include?('*')
 		if tables.include?(0)
-			cols_new.push(0,1,2,3)
+			cols_new.push(schema["a1"],schema["akc"],schema["a2"],schema["atc"])
 		end
 		if tables.include?(1)
-			cols_new.push(4,5,6,7,8)
+			cols_new.push(schema["b1"],schema["bkc"],schema["b2"],schema["b3"],schema["btc"])
 		end
 		if tables.include?(2)
-			cols_new.push(9,10,11,12,13,14)
+			cols_new.push(schema["c1"],schema["ckc"],schema["c2"],schema["c3"],schema["c4"],schema["ctc"])
 		end
 	else
 		cols.each do |col|
@@ -157,7 +169,13 @@ def convert_cols(cols,tables,schema)
 	if !cols_new.include?(schema["ctc"])
 		cols_new.push(schema["ctc"])
 	end
-	cols_new
+	columns = []
+	cols_new.each do |col|
+		if col != nil
+			columns.push(col)
+		end
+	end
+	columns
 end
 
 def convert_tables(tables,schema)
@@ -172,11 +190,12 @@ def filter_security(table,tables,clearance,schema)
 	new_table = []
 	itr = 0
 	count = 0
-	while count < tables.size
+	while count < 1#tables.size
 		table = filter_security_logic(table, tables, clearance, schema, itr)
 		itr = 0
 		count += 1
 	end
+
 	new_table = table
 	new_table
 end
@@ -187,16 +206,55 @@ class String
 	end
 end
 
-def where(table, tables, where, schema, clearance)
+def where(table, tables, cols, where, schema, clearance)
 	where = clean_where_clauses(where)
 	clauses = where.size / 3
-	i = count = itr = 0
-	while count < clauses		
-		table = where_logic(table, tables, where, schema, clearance, i, itr)
+	i = count = 0
+	while count < clauses	
+		table = where_logic(table, tables, where, schema, clearance, i, 0)
 		count += 1
 		i += 3
 	end
 	table
+end
+
+def security_single_table(table,tables,clearance,schema,itr)
+	new_table = []
+	if tables.include?(0) && !tables.include?(1) && !tables.include?(2)
+		table.each do |row|
+			if itr == 0
+				new_table.push(row)
+				itr = 1
+			else
+				if row[1] <= clearance && row[3] <= clearance
+					new_table.push(row)
+				end
+			end
+		end
+	elsif !tables.include?(0) && tables.include?(1) && !tables.include?(2)
+		table.each do |row|
+			if itr == 0
+				new_table.push(row)
+				itr = 1
+			else
+				if row[1] <= clearance && row[4] <= clearance
+					new_table.push(row)
+				end
+			end
+		end
+	elsif !tables.include?(0) && !tables.include?(1) && tables.include?(2)
+		table.each do |row|
+			if itr == 0
+				new_table.push(row)
+				itr = 1
+			else
+				if row[1] <= clearance && row[5] <= clearance
+					new_table.push(row)
+				end
+			end
+		end
+	end
+	new_table
 end
 
 def process_query(schema,tree,table,clearance)
@@ -204,18 +262,34 @@ def process_query(schema,tree,table,clearance)
 	q_arr =  q_cleaned_str.split(" ")
 	# get the tables to be queried
 	tables = convert_tables(get_tables(q_arr),schema)
+	i = 0
+	schema = find_schema(tables)
+	while i < table.size do
+		table[i] = security_single_table(table[i],[i],clearance,schema,0)
+		#table[i] = filter_security(table[i],[i],clearance,schema)
+		i += 1
+	end
 	# get the columns to be selected
 	cols = convert_cols(get_cols(q_arr),tables,schema)
-	#get the where clause
+	# get the where clause
 	if tree.where != nil
 		where_clause = tree.where.to_sql.downcase.gsub(/[^a-z0-9\s\*<>=]/i, '')
 	end
-	t = join(tables,table[0],table[1],table[2])
+#	puts "prep to cartesian_product"
+	t = cartesian_product(tables,table[0],table[1],table[2],schema)
+#	puts "cartesian -> security"
+	#t = join(tables,table[0],table[1],table[2])
 	t = filter_security(t,tables,clearance,schema)
+#	puts "security -> where"
 	if where_clause != nil
-		t = where(t,tables,where_clause,schema,clearance)
+		t = where(t,tables,cols,where_clause,schema,clearance)
 	end
-	m = to_m(t)
+#	puts "where -> m"
+	m = to_m_fast(t)
+#	puts "matrix -> ans"
+	puts " "
 	print_query(m,cols,tables)
-	#printTable(t.transpose[0..-1])
+	puts " "
+	print "Results: "
+	puts m.row_count-1
 end

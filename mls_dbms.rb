@@ -5,6 +5,8 @@ require 'sql-parser'
 require 'sql_tree'
 require 'json'
 
+#TODO make cartesian product and make it to one tc column
+
 #tables
 t1 = t2 = t3 = []
 
@@ -17,25 +19,7 @@ table.push(t1).push(t2).push(t3)
 db_scheme = '{
 	"t1"  : 0,
 	"t2"  : 1,
-	"t3"  : 2,
-
-	"a1"  : 0,
-	"a2"  : 1,
-	"akc" : 2,
-	"atc" : 3,
-
-	"b1"  : 4,
-	"b2"  : 5,
-	"b3"  : 6,
-	"bkc" : 7,
-	"btc" : 8,
-
-	"c1"  : 9,
-	"c2"  : 10,
-	"c3"  : 11,
-	"c4"  : 12,
-	"ckc" : 13,
-	"ctc" : 14
+	"t3"  : 2
 }'
 
 json = JSON.parse(db_scheme)
@@ -55,7 +39,6 @@ while (input = gets.chomp) != "exit" || (!input.include? "exit")
 	query = remove_clearance_at_front(query)
 	
 	tree = SQLTree[query.chomp]
-	
 	#process the query
 	process_query(json,tree,table,clearance)
 end
