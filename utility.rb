@@ -110,30 +110,12 @@ def join(used,t1,t2,t3)
     puts m.map { |a| a.map { |i| i.to_s.rjust(width) }.join }
   end
 
-  def print_query(m,cols,tables)
+  def print_query(schema, m, cols, tables)
     ans = []
     cols.each do |c|
-=begin
-		if c >= 0 && c < 4
-			if tables.include?(0)
-				ans.push(m.column(c).to_a)
-			end
-		end
-		if c >= 4 && c < 9
-			if tables.include?(1)
-				ans.push(m.column(c).to_a)
-			end
-		end
-		if c >= 9 && c < 15
-			if tables.include?(2)
-				ans.push(m.column(c).to_a)
-			end
-		end
-=end	
-	
       ans.push(m.column(c).to_a)
     end
-
+    ans = merge_tc(schema, cols, ans)
     print_matrix(ans.transpose)
   end
 
@@ -258,6 +240,11 @@ def join(used,t1,t2,t3)
     new_table
   end
 
+  def merge_tc(schema, cols, matrix)
+          matrix = merge_tc_logic(schema, cols, matrix)
+          matrix
+  end
+
   def process_query(schema,tree,table,clearance)
     q_cleaned_str = tree.to_sql.downcase.gsub(/[^a-z0-9\s\*<>=]/i, '')
     q_arr =  q_cleaned_str.split(" ")
@@ -289,7 +276,7 @@ def join(used,t1,t2,t3)
       m = to_m_fast(t)
       #	puts "matrix -> ans"
       puts " "
-      print_query(m,cols,tables)
+      print_query(schema, m, cols, tables)
       puts " "
       print "Results: "
       puts m.row_count-1
