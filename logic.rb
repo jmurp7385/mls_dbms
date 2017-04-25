@@ -1,258 +1,258 @@
 def filter_security_logic(table, tables, clearance, schema, itr)
-	new_table = []
-	if tables.include?(0) && !tables.include?(1) && !tables.include?(2)
-		table.each do |row|
-			if itr == 0
-				new_table.push(row)
-				itr = 1
-			else
-				if row[schema["akc"]] <= clearance && row[schema["atc"]] <= clearance
-					new_table.push(row)
-				end
-			end
-		end
-	elsif !tables.include?(0) && tables.include?(1) && !tables.include?(2)
-		table.each do |row|
-			if itr == 0
-				new_table.push(row)
-				itr = 1
-			else
-				if row[schema["bkc"]] <= clearance && row[schema["btc"]] <= clearance
-					new_table.push(row)
-				end
-			end
-		end
-	elsif !tables.include?(0) && !tables.include?(1) && tables.include?(2)
-		table.each do |row|
-			if itr == 0
-				new_table.push(row)
-				itr = 1
-			else
-				if row[schema["ckc"]] <= clearance && row[schema["ctc"]] <= clearance
-					new_table.push(row)
-				end
-			end
-		end
-	elsif tables.include?(0) && tables.include?(1) && !tables.include?(2)
-		table.each do |row|
-			if itr == 0
-				new_table.push(row)
-				itr = 1
-			else
-				if row[schema["akc"]] <= clearance && row[schema["atc"]] <= clearance && row[schema["bkc"]] <= clearance && row[schema["btc"]] <= clearance
-					new_table.push(row)
-				end
-			end
-		end
-	elsif !tables.include?(0) && tables.include?(1) && tables.include?(2)
-		table.each do |row|
-			if itr == 0
-				new_table.push(row)
-				itr = 1
-			else
-				if row[schema["bkc"]] <= clearance && row[schema["btc"]] <= clearance && row[schema["ckc"]] <= clearance && row[schema["ctc"]] <= clearance
-					new_table.push(row)
-				end
-			end
-		end
-	elsif tables.include?(0) && !tables.include?(1) && tables.include?(2)
-		table.each do |row|
-			if itr == 0
-				new_table.push(row)
-				itr = 1
-			else
-				if row[schema["akc"]] <= clearance && row[schema["atc"]] <= clearance && row[schema["ckc"]] <= clearance && row[schema["ctc"]] <= clearance
-					new_table.push(row)
-				end
-			end
-		end
-	elsif tables.include?(0) && tables.include?(1) && tables.include?(2)
-		table.each do |row|
-			if itr == 0
-				new_table.push(row)
-				itr = 1
-			else
-				if row[schema["akc"]] <= clearance && row[schema["atc"]] <= clearance && row[schema["bkc"]] <= clearance && row[schema["btc"]] <= clearance && row[schema["ckc"]] <= clearance && row[schema["ctc"]] <= clearance
-					new_table.push(row)
-				end
-			end
-		end
-	end
-	tables = new_table
-	tables
+  new_table = []
+  if tables.include?(0) && !tables.include?(1) && !tables.include?(2)
+    table.each do |row|
+      if itr == 0
+        new_table.push(row)
+        itr = 1
+      else
+        if row[schema["akc"]] <= clearance && row[schema["atc"]] <= clearance
+          new_table.push(row)
+        end
+      end
+    end
+  elsif !tables.include?(0) && tables.include?(1) && !tables.include?(2)
+    table.each do |row|
+      if itr == 0
+        new_table.push(row)
+        itr = 1
+      else
+        if row[schema["bkc"]] <= clearance && row[schema["btc"]] <= clearance
+          new_table.push(row)
+        end
+      end
+    end
+  elsif !tables.include?(0) && !tables.include?(1) && tables.include?(2)
+    table.each do |row|
+      if itr == 0
+        new_table.push(row)
+        itr = 1
+      else
+        if row[schema["ckc"]] <= clearance && row[schema["ctc"]] <= clearance
+          new_table.push(row)
+        end
+      end
+    end
+  elsif tables.include?(0) && tables.include?(1) && !tables.include?(2)
+    table.each do |row|
+      if itr == 0
+        new_table.push(row)
+        itr = 1
+      else
+        if row[schema["akc"]] <= clearance && row[schema["atc"]] <= clearance && row[schema["bkc"]] <= clearance && row[schema["btc"]] <= clearance
+          new_table.push(row)
+        end
+      end
+    end
+  elsif !tables.include?(0) && tables.include?(1) && tables.include?(2)
+    table.each do |row|
+      if itr == 0
+        new_table.push(row)
+        itr = 1
+      else
+        if row[schema["bkc"]] <= clearance && row[schema["btc"]] <= clearance && row[schema["ckc"]] <= clearance && row[schema["ctc"]] <= clearance
+          new_table.push(row)
+        end
+      end
+    end
+  elsif tables.include?(0) && !tables.include?(1) && tables.include?(2)
+    table.each do |row|
+      if itr == 0
+        new_table.push(row)
+        itr = 1
+      else
+        if row[schema["akc"]] <= clearance && row[schema["atc"]] <= clearance && row[schema["ckc"]] <= clearance && row[schema["ctc"]] <= clearance
+          new_table.push(row)
+        end
+      end
+    end
+  elsif tables.include?(0) && tables.include?(1) && tables.include?(2)
+    table.each do |row|
+      if itr == 0
+        new_table.push(row)
+        itr = 1
+      else
+        if row[schema["akc"]] <= clearance && row[schema["atc"]] <= clearance && row[schema["bkc"]] <= clearance && row[schema["btc"]] <= clearance && row[schema["ckc"]] <= clearance && row[schema["ctc"]] <= clearance
+          new_table.push(row)
+        end
+      end
+    end
+  end
+  tables = new_table
+  tables
 end
 
 def where_logic(table, tables, where, schema, clearance, i, itr)
-	new_table = []
-	table.each do |row|
-		if itr == 0
-			new_table.push(row)
-			itr = 1
-		else
-			if (where[i] == "tc") || (where[i] == "atc") || (where[i] == "btc") || (where[i] == "ctc")
-				if where[i+2] > clearance
-					abort("You don't have the clearance for that")
-				end
-				if tables.include?(0) && !tables.include?(1) && !tables.include?(2)
-					if row[schema["atc"]].to_i.send("<=",where[i+2].to_i) && row[schema["akc"]].to_i.send("<=",where[i+2].to_i)
-						new_table.push(row)
-					end
-				elsif !tables.include?(0) && tables.include?(1) && !tables.include?(2)
-					if row[schema["btc"]].to_i.send("<=",where[i+2].to_i) && row[schema["bkc"]].to_i.send("<=",where[i+2].to_i)
-						new_table.push(row)
-					end
-				elsif !tables.include?(0) && !tables.include?(1) && tables.include?(2)
-					if row[schema["ctc"]].to_i.send(where[i+1],where[i+2].to_i) && row[schema["ckc"]].to_i.send("<=",where[i+2].to_i)
-						new_table.push(row)
-					end
-				elsif tables.include?(0) && tables.include?(1) && !tables.include?(2)
-					if row[schema["atc"]].to_i.send("<=",where[i+2].to_i) && row[schema["btc"]].to_i.send("<=",where[i+2].to_i) && row[schema["akc"]].to_i.send("<=",where[i+2].to_i) && row[schema["bkc"]].to_i.send("<=",where[i+2].to_i)
-						new_table.push(row)
-					end
-				elsif !tables.include?(0) && tables.include?(1) && tables.include?(2)
-					if row[schema["btc"]].to_i.send("<=",where[i+2].to_i) && row[schema["ctc"]].to_i.send("<=",where[i+2].to_i) && row[schema["bkc"]].to_i.send("<=",where[i+2].to_i) && row[schema["ckc"]].to_i.send("<=",where[i+2].to_i)
-						new_table.push(row)
-					end
-				elsif tables.include?(0) && !tables.include?(1) && tables.include?(2)
-					if row[schema["atc"]].to_i.send("<=",where[i+2].to_i) && row[schema["ctc"]].to_i.send("<=",where[i+2].to_i) && row[schema["akc"]].to_i.send("<=",where[i+2].to_i) && row[schema["ckc"]].to_i.send("<=",where[i+2].to_i)
-						new_table.push(row)
-					end
-				elsif tables.include?(0) && tables.include?(1) && tables.include?(2)
-					if row[schema["atc"]].to_i.send("<=",where[i+2].to_i) && row[schema["btc"]].to_i.send("<=",where[i+2].to_i) && row[schema["ctc"]].to_i.send("<=",where[i+2].to_i) && row[schema["akc"]].to_i.send("<=",where[i+2].to_i) && row[schema["bkc"]].to_i.send("<=",where[i+2].to_i) && row[schema["ckc"]].to_i.send("<=",where[i+2].to_i)
-						new_table.push(row)
-					end
-				end
-			else
-				if (!where[i].is_i?) && (!where[i+2].is_i?)
-					if row[schema[where[i]]].to_i.send( where[i+1] , row[schema[where[i+2]]].to_i )
-						new_table.push(row)
-					end
-				elsif (!where[i].is_i?) && (where[i+2].is_i?)
-					if row[schema[where[i]]].to_i.send( where[i+1] , where[i+2].to_i )
-						new_table.push(row)
-					end
-				elsif (where[i].is_i?) && (!where[i+2].is_i?)
-					if row[schema[where[i]]].to_i.send( where[i+1] , row[schema[where[i+2]]].to_i )
-						new_table.push(row)
-					end
-				end
-			end
-		end
-	end
-	new_table	
+  new_table = []
+  table.each do |row|
+    if itr == 0
+      new_table.push(row)
+      itr = 1
+    else
+      if (where[i] == "tc") || (where[i] == "atc") || (where[i] == "btc") || (where[i] == "ctc")
+        if where[i+2] > clearance
+          abort("You don't have the clearance for that")
+        end
+        if tables.include?(0) && !tables.include?(1) && !tables.include?(2)
+          if row[schema["atc"]].to_i.send("<=",where[i+2].to_i) && row[schema["akc"]].to_i.send("<=",where[i+2].to_i)
+            new_table.push(row)
+          end
+        elsif !tables.include?(0) && tables.include?(1) && !tables.include?(2)
+          if row[schema["btc"]].to_i.send("<=",where[i+2].to_i) && row[schema["bkc"]].to_i.send("<=",where[i+2].to_i)
+            new_table.push(row)
+          end
+        elsif !tables.include?(0) && !tables.include?(1) && tables.include?(2)
+          if row[schema["ctc"]].to_i.send(where[i+1],where[i+2].to_i) && row[schema["ckc"]].to_i.send("<=",where[i+2].to_i)
+            new_table.push(row)
+          end
+        elsif tables.include?(0) && tables.include?(1) && !tables.include?(2)
+          if row[schema["atc"]].to_i.send("<=",where[i+2].to_i) && row[schema["btc"]].to_i.send("<=",where[i+2].to_i) && row[schema["akc"]].to_i.send("<=",where[i+2].to_i) && row[schema["bkc"]].to_i.send("<=",where[i+2].to_i)
+            new_table.push(row)
+          end
+        elsif !tables.include?(0) && tables.include?(1) && tables.include?(2)
+          if row[schema["btc"]].to_i.send("<=",where[i+2].to_i) && row[schema["ctc"]].to_i.send("<=",where[i+2].to_i) && row[schema["bkc"]].to_i.send("<=",where[i+2].to_i) && row[schema["ckc"]].to_i.send("<=",where[i+2].to_i)
+            new_table.push(row)
+          end
+        elsif tables.include?(0) && !tables.include?(1) && tables.include?(2)
+          if row[schema["atc"]].to_i.send("<=",where[i+2].to_i) && row[schema["ctc"]].to_i.send("<=",where[i+2].to_i) && row[schema["akc"]].to_i.send("<=",where[i+2].to_i) && row[schema["ckc"]].to_i.send("<=",where[i+2].to_i)
+            new_table.push(row)
+          end
+        elsif tables.include?(0) && tables.include?(1) && tables.include?(2)
+          if row[schema["atc"]].to_i.send("<=",where[i+2].to_i) && row[schema["btc"]].to_i.send("<=",where[i+2].to_i) && row[schema["ctc"]].to_i.send("<=",where[i+2].to_i) && row[schema["akc"]].to_i.send("<=",where[i+2].to_i) && row[schema["bkc"]].to_i.send("<=",where[i+2].to_i) && row[schema["ckc"]].to_i.send("<=",where[i+2].to_i)
+            new_table.push(row)
+          end
+        end
+      else
+        if (!where[i].is_i?) && (!where[i+2].is_i?)
+          if row[schema[where[i]]].to_i.send( where[i+1] , row[schema[where[i+2]]].to_i )
+            new_table.push(row)
+          end
+        elsif (!where[i].is_i?) && (where[i+2].is_i?)
+          if row[schema[where[i]]].to_i.send( where[i+1] , where[i+2].to_i )
+            new_table.push(row)
+          end
+        elsif (where[i].is_i?) && (!where[i+2].is_i?)
+          if row[schema[where[i]]].to_i.send( where[i+1] , row[schema[where[i+2]]].to_i )
+            new_table.push(row)
+          end
+        end
+      end
+    end
+  end
+  new_table
 end
 
 def cartesian_product_logic(tables,t1,t2,t3,schema)
-	i = 1
-	j = 1
-	k = 1
-	new_table = []
-	new_row = []
-	if tables.size == 1
-		if tables.include?(0)
-			new_table = t1
-		end
-		if tables.include?(1)
-			new_table = t2
-		end
-		if tables.include?(2)
-			new_table = t3
-		end
-	elsif tables.size == 2
-		if tables[0] == 0 && tables[1] == 1
-			new_table.push(new_row.push(t1[0]).push(t2[0]).flatten!)
-			while i < t1.size do
-				while j < t2.size do
-					new_row = []
-					if t1[i][1] == t2[j][1]
-						new_row.push(t1[i]).push(t2[j]).flatten!
-						new_table.push(new_row)
-					end
-					j += 1
-				end
-				j = 1
-				i += 1
-			end
-		elsif tables[0] == 1 && tables[1] == 2
-			new_table.push(new_row.push(t2[0]).push(t3[0]).flatten!)
-			while i < t2.size do
-				while j < t3.size do
-					new_row = []
-					if t2[i][1] == t3[j][1]
-						new_row.push(t2[j]).push(t3[k]).flatten!
-						new_table.push(new_row)
-					end
-					j += 1
-				end
-				j = 1
-				i += 1
-			end
-		elsif tables[0] == 0 && tables[1] == 2
-			new_table.push(new_row.push(t1[0]).push(t3[0]).flatten!)
-			while i < t1.size do
-				while j < t3.size do
-					if t1[i][1] == t3[j][1]
-						new_row.push(t1[i]).push(t3[k]).flatten!
-						new_table.push(new_row)
-					end
-					j += 1
-				end
-				j = 1
-				i += 1
-			end
-		end
-	elsif tables.size == 3
-		t2_t3 = []
-		new_table.push(new_row.push(t1[0]).push(t2[0]).push(t3[0]).flatten!)
-		while i < t2.size do
-			while j < t3.size do
-				new_row = []
-				if t2[i][1] == t3[j][1]
-					new_row.push(t2[i]).push(t3[j]).flatten!
-					t2_t3.push(new_row)
-				end
-				j += 1
-			end
-			j = 1
-			i += 1
-		end
-		i = 1
-		j = 0
-		while i < t1.size do
-			while j < t2_t3.size do
-				new_row = []
-				if t1[i][1] == t2_t3[j][1]
-					new_row.push(t1[i]).push(t2_t3[j]).flatten!
-					new_table.push(new_row)
-				end
-				j += 1
-			end
-			j = 1
-			i += 1
-		end
+  i = 1
+  j = 1
+  k = 1
+  new_table = []
+  new_row = []
+  if tables.size == 1
+    if tables.include?(0)
+      new_table = t1
+    end
+    if tables.include?(1)
+      new_table = t2
+    end
+    if tables.include?(2)
+      new_table = t3
+    end
+  elsif tables.size == 2
+    if tables[0] == 0 && tables[1] == 1
+      new_table.push(new_row.push(t1[0]).push(t2[0]).flatten!)
+      while i < t1.size do
+          while j < t2.size do
+              new_row = []
+              if t1[i][1] == t2[j][1]
+                new_row.push(t1[i]).push(t2[j]).flatten!
+                new_table.push(new_row)
+              end
+              j += 1
+            end
+            j = 1
+            i += 1
+          end
+          elsif tables[0] == 1 && tables[1] == 2
+            new_table.push(new_row.push(t2[0]).push(t3[0]).flatten!)
+            while i < t2.size do
+                while j < t3.size do
+                    new_row = []
+                    if t2[i][1] == t3[j][1]
+                      new_row.push(t2[j]).push(t3[k]).flatten!
+                      new_table.push(new_row)
+                    end
+                    j += 1
+                  end
+                  j = 1
+                  i += 1
+                end
+                elsif tables[0] == 0 && tables[1] == 2
+                  new_table.push(new_row.push(t1[0]).push(t3[0]).flatten!)
+                  while i < t1.size do
+                      while j < t3.size do
+                          if t1[i][1] == t3[j][1]
+                            new_row.push(t1[i]).push(t3[k]).flatten!
+                            new_table.push(new_row)
+                          end
+                          j += 1
+                        end
+                        j = 1
+                        i += 1
+                      end
+                    end
+                    elsif tables.size == 3
+                      t2_t3 = []
+                      new_table.push(new_row.push(t1[0]).push(t2[0]).push(t3[0]).flatten!)
+                      while i < t2.size do
+                          while j < t3.size do
+                              new_row = []
+                              if t2[i][1] == t3[j][1]
+                                new_row.push(t2[i]).push(t3[j]).flatten!
+                                t2_t3.push(new_row)
+                              end
+                              j += 1
+                            end
+                            j = 1
+                            i += 1
+                          end
+                          i = 1
+                          j = 0
+                          while i < t1.size do
+                              while j < t2_t3.size do
+                                  new_row = []
+                                  if t1[i][1] == t2_t3[j][1]
+                                    new_row.push(t1[i]).push(t2_t3[j]).flatten!
+                                    new_table.push(new_row)
+                                  end
+                                  j += 1
+                                end
+                                j = 1
+                                i += 1
+                              end
 
-	end
-	#print_matrix(new_table)
-	new_table
-end
+                            end
+                            #print_matrix(new_table)
+                            new_table
+                          end
 
-def clean_where_clauses(where)
-	loop do
-		where.slice! "and"
-		break if !where.include?("and")
-	end
-	where = where.split(' ')
-	if where.include?("=")
-		loop do
-			where[where.index("=")].replace("==")
-			break if !where.include?("=")
-		end
-	end
-	where
-end
+                          def clean_where_clauses(where)
+                            loop do
+                              where.slice! "and"
+                              break if !where.include?("and")
+                            end
+                            where = where.split(' ')
+                            if where.include?("=")
+                              loop do
+                                where[where.index("=")].replace("==")
+                                break if !where.include?("=")
+                              end
+                            end
+                            where
+                          end
 
-def find_schema(tables)
-t1_scheme = '{
+                          def find_schema(tables)
+                            t1_scheme = '{
 	"t1"  : 0,
 	"t2"  : 1,
 	"t3"  : 2,
@@ -263,7 +263,7 @@ t1_scheme = '{
 	"atc" : 3
 }'
 
-t2_scheme = '{
+                            t2_scheme = '{
 	"t1"  : 0,
 	"t2"  : 1,
 	"t3"  : 2,
@@ -275,7 +275,7 @@ t2_scheme = '{
 	"btc" : 4
 }'
 
-t3_scheme = '{
+                            t3_scheme = '{
 	"t1"  : 0,
 	"t2"  : 1,
 	"t3"  : 2,
@@ -288,7 +288,7 @@ t3_scheme = '{
 	"ctc" : 5
 }'
 
-t1_t2_scheme = '{
+                            t1_t2_scheme = '{
 	"t1"  : 0,
 	"t2"  : 1,
 	"t3"  : 2,
@@ -305,7 +305,7 @@ t1_t2_scheme = '{
 	"btc" : 8
 }'
 
-t2_t3_scheme = '{
+                            t2_t3_scheme = '{
 	"t1"  : 0,
 	"t2"  : 1,
 	"t3"  : 2,
@@ -324,7 +324,7 @@ t2_t3_scheme = '{
 	"ctc" : 10
 }'
 
-t1_t3_scheme = '{
+                            t1_t3_scheme = '{
 	"t1"  : 0,
 	"t2"  : 1,
 	"t3"  : 2,
@@ -342,7 +342,7 @@ t1_t3_scheme = '{
 	"ctc" : 9
 }'
 
-t1_t2_t3_scheme = '{
+                            t1_t2_t3_scheme = '{
 	"t1"  : 0,
 	"t2"  : 1,
 	"t3"  : 2,
@@ -366,38 +366,38 @@ t1_t2_t3_scheme = '{
 	"ctc" : 14
 }'
 
-	t1_schema = JSON.parse(t1_scheme)
-	t2_schema = JSON.parse(t2_scheme)
-	t3_schema = JSON.parse(t3_scheme)
-	t1_t2_schema = JSON.parse(t1_t2_scheme)
-	t2_t3_schema = JSON.parse(t2_t3_scheme)
-	t1_t3_schema = JSON.parse(t1_t3_scheme)
-	t1_t2_t3_schema = JSON.parse(t1_t2_t3_scheme)
-	schemas = []
-	schemas.push(t1_schema).push(t2_schema).push(t3_schema).push(t1_t2_schema).push(t2_t3_schema).push(t1_t3_schema).push(t1_t2_t3_schema)
-	
-	if tables.size == 1
-		if tables[0] == 0
-			db_schema = schemas[0]
-		end
-		if tables[0] == 1
-			db_schema = schemas[1]
-		end
-		if tables[0] == 2
-			db_schema = schemas[2]
-		end
-	elsif tables.size == 2
-		if tables.include?(0) && tables.include?(1)
-			db_schema = JSON.parse(t1_t2_scheme)
-		end
-		if tables.include?(1) && tables.include?(2)
-			db_schema = JSON.parse(t2_t3_scheme)
-		end
-		if tables.include?(0) && tables.include?(2)
-			db_schema = schemas[5]
-		end
-	elsif tables.size == 3
-		db_schema = JSON.parse(t1_t2_t3_scheme)
-	end
-	db_schema
-end
+                            t1_schema = JSON.parse(t1_scheme)
+                            t2_schema = JSON.parse(t2_scheme)
+                            t3_schema = JSON.parse(t3_scheme)
+                            t1_t2_schema = JSON.parse(t1_t2_scheme)
+                            t2_t3_schema = JSON.parse(t2_t3_scheme)
+                            t1_t3_schema = JSON.parse(t1_t3_scheme)
+                            t1_t2_t3_schema = JSON.parse(t1_t2_t3_scheme)
+                            schemas = []
+                            schemas.push(t1_schema).push(t2_schema).push(t3_schema).push(t1_t2_schema).push(t2_t3_schema).push(t1_t3_schema).push(t1_t2_t3_schema)
+
+                            if tables.size == 1
+                              if tables[0] == 0
+                                db_schema = schemas[0]
+                              end
+                              if tables[0] == 1
+                                db_schema = schemas[1]
+                              end
+                              if tables[0] == 2
+                                db_schema = schemas[2]
+                              end
+                            elsif tables.size == 2
+                              if tables.include?(0) && tables.include?(1)
+                                db_schema = JSON.parse(t1_t2_scheme)
+                              end
+                              if tables.include?(1) && tables.include?(2)
+                                db_schema = JSON.parse(t2_t3_scheme)
+                              end
+                              if tables.include?(0) && tables.include?(2)
+                                db_schema = schemas[5]
+                              end
+                            elsif tables.size == 3
+                              db_schema = JSON.parse(t1_t2_t3_scheme)
+                            end
+                            db_schema
+                          end

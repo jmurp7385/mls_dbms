@@ -26,19 +26,19 @@ json = JSON.parse(db_scheme)
 
 #enter queries until exit is typed
 while (input = gets.chomp) != "exit" || (!input.include? "exit")
-	query = ""
-	while (input) != ";" || (!query.include? ?;)
-		query += input
-		if query.include? ?;
-			query.tr_s!(';','')
-			break
-		end
-	end
-	#get clearance and remoive it from front of the query
-	clearance = check_clearance(query)
-	query = remove_clearance_at_front(query)
-	
-	tree = SQLTree[query.chomp]
-	#process the query
-	process_query(json,tree,table,clearance)
+  query = ""
+  while (input) != ";" || (!query.include? ?;)
+    query += input
+    if query.include? ?;
+      query.tr_s!(';','')
+      break
+    end
+  end
+  #get clearance and remoive it from front of the query
+  clearance = check_clearance(query)
+  query = remove_clearance_at_front(query)
+
+  tree = SQLTree[query.chomp]
+  #process the query
+  process_query(json,tree,table,clearance)
 end
