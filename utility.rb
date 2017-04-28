@@ -1,3 +1,27 @@
+=begin
+MIT License
+
+Copyright (c) 2017 Joseph Gregory Murphy
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+=end
+
 require 'matrix'
 require 'sql_tree'
 require 'json'
@@ -121,6 +145,9 @@ def join(used,t1,t2,t3)
 
   def convert_cols(cols,tables,schema)
     cols_new = []
+    akc = 0
+    bkc = 0
+    ckc = 0
     if cols.include?('*')
       if tables.include?(0)
         cols_new.push(schema["a1"],schema["akc"],schema["a2"],schema["atc"])
@@ -134,14 +161,20 @@ def join(used,t1,t2,t3)
     else
       cols.each do |col|
         cols_new.push(schema[col])
+        if cols_new.include?(schema["a1"]) && cols.include?("a1") && akc == 0
+          cols_new.push(schema["akc"])
+          akc = 1
+        end
+        if cols_new.include?(schema["b1"]) && cols.include?("b1") && bkc == 0
+          cols_new.push(schema["bkc"])
+          bkc = 1
+        end
+        if cols_new.include?(schema["c1"]) && cols.include?("c1") && ckc == 0 
+          cols_new.push(schema["ckc"])
+          ckc = 1
+        end
       end
-      if cols.include?("a1")
-        cols_new.push(schema["akc"])
-      elsif cols.include?("b1")
-        cols_new.push(schema["bkc"])
-      elsif cols.include?("c1")
-        cols_new.push(schema["ckc"])
-      end
+      
     end
     if !cols_new.include?(schema["atc"])
       cols_new.push(schema["atc"])
@@ -241,8 +274,8 @@ def join(used,t1,t2,t3)
   end
 
   def merge_tc(schema, cols, matrix)
-          matrix = merge_tc_logic(schema, cols, matrix)
-          matrix
+    matrix = merge_tc_logic(schema, cols, matrix)
+    matrix
   end
 
   def process_query(schema,tree,table,clearance)
@@ -263,18 +296,18 @@ def join(used,t1,t2,t3)
       if tree.where != nil
         where_clause = tree.where.to_sql.downcase.gsub(/[^a-z0-9\s\*<>=]/i, '')
       end
-      #	puts "prep to cartesian_product"
+      # puts "prep to cartesian_product"
       t = cartesian_product(tables,table[0],table[1],table[2],schema)
-      #	puts "cartesian -> security"
+      # puts "cartesian -> security"
       #t = join(tables,table[0],table[1],table[2])
       t = filter_security(t,tables,clearance,schema)
-      #	puts "security -> where"
+      # puts "security -> where"
       if where_clause != nil
         t = where(t,tables,cols,where_clause,schema,clearance)
       end
-      #	puts "where -> m"
+      # puts "where -> m"
       m = to_m_fast(t)
-      #	puts "matrix -> ans"
+      # puts "matrix -> ans"
       puts " "
       print_query(schema, m, cols, tables)
       puts " "
