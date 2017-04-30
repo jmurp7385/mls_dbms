@@ -57,14 +57,13 @@ while (1)
     if input == "exit"
       abort("Exited")
     end
-    query += " " + input    
+    query += input + " "
     if query.include? ?;
       query.tr_s!(';','')
       break
     end
   end
-  query = query.gsub(/[ \n\t\r]/i, ' ')
-  puts query
+  query = query.gsub(/[ \n\t\r]/i, ' ')  
   #get clearance and remoive it from front of the query
   clearance = check_clearance(query)
   query = remove_clearance_at_front(query)

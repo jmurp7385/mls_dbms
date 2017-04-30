@@ -128,8 +128,7 @@ def join(used,t1,t2,t3)
     m
   end
 
-  def print_matrix(m)
-    #m.to_a.each {|r| puts r.inspect}
+  def print_matrix(m)    
     width = m.flatten.max.to_s.size+4
     puts m.map { |a| a.map { |i| i.to_s.rjust(width) }.join }
   end
@@ -139,8 +138,23 @@ def join(used,t1,t2,t3)
     cols.each do |c|
       ans.push(m.column(c).to_a)
     end
+    ans = check_kc(schema, tables, cols, ans)
     ans = merge_tc(schema, cols, ans)
     print_matrix(ans.transpose)
+  end
+
+  # checks if there is only a single table and replaces the *KC col with KC
+  def check_kc(schema, tables, cols, m)
+    if tables.size == 1
+      if tables.include?(0) && cols.include?(schema['akc'])
+        m[schema['akc']][0] = 'KC'     
+      elsif tables.include?(1) && cols.include?(schema['bkc'])
+        m[schema['bkc']][0] = 'KC'
+      elsif tables.include?(2) && cols.include?(schema['ckc'])
+        m[schema['ckc']][0] = 'KC'
+      end
+    end
+    m
   end
 
   def convert_cols(cols,tables,schema)
@@ -173,8 +187,7 @@ def join(used,t1,t2,t3)
           cols_new.push(schema["ckc"])
           ckc = 1
         end
-      end
-      
+      end      
     end
     if !cols_new.include?(schema["atc"])
       cols_new.push(schema["atc"])
@@ -297,16 +310,17 @@ def join(used,t1,t2,t3)
         where_clause = tree.where.to_sql.downcase.gsub(/[^a-z0-9\s\*<>=]/i, '')
       end
       # puts "prep to cartesian_product"
-      t = cartesian_product(tables,table[0],table[1],table[2],schema)
+      t = cartesian_product(tables,table[0],table[1],table[2],schema)      
       # puts "cartesian -> security"
       #t = join(tables,table[0],table[1],table[2])
-      t = filter_security(t,tables,clearance,schema)
+      t = filter_security(t,tables,clearance,schema)      
       # puts "security -> where"
       if where_clause != nil
         t = where(t,tables,cols,where_clause,schema,clearance)
-      end
-      # puts "where -> m"
-      m = to_m_fast(t)
+      end      
+      # puts "where -> m"      
+      m = to_m_fast(t)  
+          
       # puts "matrix -> ans"
       puts " "
       print_query(schema, m, cols, tables)

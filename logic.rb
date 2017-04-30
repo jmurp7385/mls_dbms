@@ -203,7 +203,7 @@ def cartesian_product_logic(tables,t1,t2,t3,schema)
         while j < t3.size
           new_row = []
           if t2[i][1] == t3[j][1]
-            new_row.push(t2[j]).push(t3[k]).flatten!
+            new_row.push(t2[i]).push(t3[j]).flatten!
             new_table.push(new_row)
           end
           j += 1
@@ -211,21 +211,22 @@ def cartesian_product_logic(tables,t1,t2,t3,schema)
         j = 1
         i += 1
       end
-    elsif tables[0] == 0 && tables[1] == 2
+    elsif tables[0] == 0 && tables[1] == 2    	
       new_table.push(new_row.push(t1[0]).push(t3[0]).flatten!)
       while i < t1.size
         while j < t3.size
+       	  new_row = []
           if t1[i][1] == t3[j][1]
-            new_row.push(t1[i]).push(t3[k]).flatten!
-            new_table.push(new_row)
+            new_row.push(t1[i]).push(t3[j]).flatten!            
+            new_table.push(new_row)            
           end
           j += 1
         end
         j = 1
         i += 1
       end
-    end
-  elsif tables.size == 3
+    end    
+  elsif tables.size == 3  	
     t2_t3 = []
     new_table.push(new_row.push(t1[0]).push(t2[0]).push(t3[0]).flatten!)
     while i < t2.size
@@ -255,8 +256,7 @@ def cartesian_product_logic(tables,t1,t2,t3,schema)
       i += 1
     end
 
-  end
-  #print_matrix(new_table)
+  end  
   new_table
 end
 
